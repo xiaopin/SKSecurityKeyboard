@@ -86,7 +86,7 @@ UIKIT_STATIC_INLINE UIColor* sk_rgb(CGFloat r, CGFloat g, CGFloat b)
 
 #pragma mark -
 
-@interface SKSecurityKeyboard ()
+@interface SKSecurityKeyboard ()<UIInputViewAudioFeedback>
 {
     UIToolbar *_toolbar;
     UIView *_contentView;
@@ -136,7 +136,6 @@ UIKIT_STATIC_INLINE UIColor* sk_rgb(CGFloat r, CGFloat g, CGFloat b)
 
         _inputSource = inputSource;
         _enabledInputAccessoryView = YES;
-        _enabledKeyboardSound = YES;
         [self setKeyboardType:keyboardType];
         
         NSNotificationName name = ([inputSource isKindOfClass:UITextField.class]) ? UITextFieldTextDidBeginEditingNotification : UITextViewTextDidBeginEditingNotification;
@@ -152,6 +151,12 @@ UIKIT_STATIC_INLINE UIColor* sk_rgb(CGFloat r, CGFloat g, CGFloat b)
     }
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextFieldTextDidBeginEditingNotification object:nil];
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UITextViewTextDidBeginEditingNotification object:nil];
+}
+
+#pragma mark <UIInputViewAudioFeedback>
+
+- (BOOL)enableInputClicksWhenVisible {
+    return YES;
 }
 
 #pragma mark Actions
@@ -192,11 +197,8 @@ UIKIT_STATIC_INLINE UIColor* sk_rgb(CGFloat r, CGFloat g, CGFloat b)
     } else {
         [_inputSource insertText:text];
     }
-    // Key sound
-    if (_enabledKeyboardSound) {
-        // http://iphonedevwiki.net/index.php/AudioServices
-        AudioServicesPlaySystemSound(1104);
-    }
+    // https://developer.apple.com/library/archive/documentation/StringsTextFonts/Conceptual/TextAndWebiPhoneOS/InputViews/InputViews.html#//apple_ref/doc/uid/TP40009542-CH12-SW5
+    [[UIDevice currentDevice] playInputClick];
 }
 
 - (void)deleteButtonLongPressGestureRecognizerAction:(UILongPressGestureRecognizer *)sender {

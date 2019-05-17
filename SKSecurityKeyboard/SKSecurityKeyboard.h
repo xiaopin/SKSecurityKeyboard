@@ -29,8 +29,6 @@ NS_CLASS_AVAILABLE_IOS(9_0) @interface SKSecurityKeyboard : UIView
 @property (nonatomic, assign) SKSecurityKeyboardType keyboardType;
 /// 是否显示自带的辅助工具条, 默认`YES`
 @property (nonatomic, assign, getter=isEnabledInputAccessoryView) BOOL enabledInputAccessoryView;
-/// 是否启用按键音, 默认`YES`, 需要关闭手机的静音模式才会有声音
-@property (nonatomic, assign, getter=isEnabledKeyboardSound) BOOL enabledKeyboardSound;
 
 /**
  初始化
